@@ -1,8 +1,10 @@
 package com.congzibank.dayalgrithm.stringalgorithm;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Stack;
 
@@ -205,5 +207,82 @@ public class MaxString {
             map.put(bChars[j], map.get(bChars[j]) - 1);
         }
         return true;
+    }
+
+    /**
+     * 恢复ip地址，使用 递归暴力求解
+     * 1 定义这个ip段是否有先 函数 辅助函数
+     * 2 使用 int 变量 表示当前递归到第几段，如果到了第四段，则保存到result中，
+     * 3 否则判断 当前段 1-3长度的可能性是否有效
+     * @param s
+     * @return
+     */
+    public List<String> restoreIpAddresses(String s) {
+        List<String> result = new ArrayList<>();
+        if (s == null || s.length() < 4 || s.length() > 12) {
+            return result;
+        }
+        search(result, "", s, 0);
+        return result;
+    }
+
+    /**
+     * 这个递归函数
+     * @param result 结果
+     * @param tempString  临时生成的字符串，用来保存之前符合条件的ip段
+     * @param remain 剩余还没被分段的字符串
+     * @param start 已经划分的段数
+     */
+    private void search(List<String> result, String tempString, String remain, int start) {
+        if (start == 3) { // 表明是第四段ip
+            if (isValid(remain)) {
+                result.add(tempString + remain);
+            }
+            return;
+        }
+
+        //每一段的ip有三种可能的长度
+        for (int i = 1 ; i < 4 && i < remain.length(); i++) {
+            String curr = remain.substring(0, i);// 得到每种的字符
+            //判断是否有效
+            if (isValid(curr)) {
+                search(result, tempString + curr + ".", remain.substring(i), start + 1);
+            }
+        }
+
+    }
+
+    /**
+     * 判断字符串是否符合IP地址的标准
+     * 0-255
+     * @param s
+     * @return
+     */
+    public boolean isValid(String s) {
+        if(s.charAt(0) == '0')
+            return s.equals("0"); // to eliminate cases like "00", "10"
+        int digit = Integer.valueOf(s);
+        return digit >= 0 && digit <= 255;
+    }
+
+    /**
+     *  朋友圈数量
+     *  班上有 N 名学生。其中有些人是朋友，有些则不是。他们的友谊具有是传递性。如果已知 A 是 B 的朋友，B 是 C 的朋友，那么我们可以认为 A 也是 C 的朋友。所谓的朋友圈，是指所有朋友的集合。
+
+     给定一个 N * N 的矩阵 M，表示班级中学生之间的朋友关系。如果M[i][j] = 1，表示已知第 i 个和 j 个学生互为朋友关系，否则为不知道。你必须输出所有学生中的已知的朋友圈总数。
+     * @param M
+     * @return
+     */
+    public int findCircleNum(int[][] M) {
+        if (M == null || M.length == 0) {
+            return 0;
+        }
+        int num = 0;
+        for (int i = 0; i < M.length ; i++) {
+            for (int j = i; j < M.length ; j++ ) {
+
+            }
+        }
+        return 0;
     }
 }
